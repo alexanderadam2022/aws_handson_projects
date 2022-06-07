@@ -1,0 +1,25 @@
+Oluşturma Sırası:
+-----------------
+1- create security group; (SSH-HTTP)/anywhere/default VPC)
+
+2- Launch Instances with Launch Template; 
+(amı/t2.micro/key pair/VPC/volume->default/resorcetypr->instance/user data-->bu komut kısmı önemli)
+actions->launch instance from template, number of instance:2)
+
+3- create a target group;
+(hepsi default, interval:10 seconds, tags-->key/value gir
+two instances-->add to them to the target group/port 80)
+
+4- create Application Load Balancer;
+(name, internet-facing, ipv4, select all AZ's, select security group)
+
+5- attach target group to ALB;
+
+
+Silme Sırası
+-------------
+1- Ec-2 Instances Terminate
+2- ALB (Load Balancer)
+3- Target Group
+4- Launch Template
+5- security group

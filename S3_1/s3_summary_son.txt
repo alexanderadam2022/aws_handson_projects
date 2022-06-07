@@ -1,0 +1,47 @@
+
+Part 1 - S3 Bucket Basic Operations:
+-----------------------------------
+- s3 aç, create bucket: unique name,ACLs enabled, Bucket owner preferred, Block all public access, Bucket Versioning->Disable, Server-side encryption->Disable, Advanced settings->Disable
+
+- masaüstünden foto sürükle bırak, onayla
+cat.jpg--> properties ve object URL kopyala linki crome yapıştır. https://alexanderf1388.s3.amazonaws.com/cat.jpg
+
+- bucket-> permission-> ayarları all tıkını kaldır ve onayla
+- bucket object tıkla, actions -->share with a presigned URL belirli süre yayınla ya da;
+- actions-->make public using ACL seçip onaylarsak önceki URL açabiliriz.
+-action->create folder yapabiliyoruz.
+- actions->cat oluşturduğumuz klasöre taşıma için cat seç actions, move aç, bucket olarak browse ara oluşturduğumuz klasörrü seç ve destination gönder.:))
+- cat dosyasını silebilir, adını değiştirebiliriz.
+
+Part 2 - Creating a new Bucket for Static Website:
+--------------------------------------------------
+- sadece ismi ver(alexander.static-f1388), diğerleri dafault ve create
+- cat ve index masaüstünden birer birer sürükle ve upload et.
+- alexander.static-f1388 içine gir, Block public access (bucket settings) edit bas + permission all tıkını kaldır ve onayla
+- edit bucket policy gir, içini handson dan (policy.json) içeriğini yapıştır. ancak "beni değiştirmeyi unutma" dediği yeri hemen üstündeki ismi kopyala(Bucket ARN linki) " /* " kalacak.
+- properties gir en alta git-->static website hosting-> enable yap,
+Index document içine--> index.html yaz save yaptıktan sonra tekrar en alta in-->URL kopyalayalım.
+- object git, properties tıkla, object URL kopyala crome da aç
+http://alexander.static-f1388.s3-website-us-east-1.amazonaws.com
+sayfada resmi gör:))
+- cute adlı dosya create et. cat ve index içine move ile taşı. browser git cat gözükmez. ancak adresin sonuna "/cute/" ekleyince tekrar gözüküyor.
+
+Part 3 - Creating S3 Bucket with Versioning:
+-------------------------------------------
+- isim ver
+- Block all public access, acknowledge tık koy
+- Bucket Versioning-> enable
+- index ve cat sürükle ve load et.
+- permission aç, Bucket policy edit yap içini sil. vscode yapıştır, ancak adresine linke ekleyerek onayla
+-properties en alta git , index.html yaz onayla adresi oluştur.
+- yeniden index.html sürükle bırak ve object sağda show versions tıkla altta ikinci index.html gözükür.
+- cat sil ve sayfadan bak kedi kayboldu.
+- show version tıklayınca cat-> delete marker olarak gözüktü. bu delete marker silince yedek asıl hale gelecek.
+- ancak delete marker'lı cat silince permanently silinmiş olacak.
+- index.html vscode version değiştirip kaydedip sürükleyip tekrar yüklersek istediğimiz en son versiyonu görebiliriz.
+
+
+
+
+
+

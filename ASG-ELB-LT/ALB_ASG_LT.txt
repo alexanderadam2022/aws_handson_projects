@@ -1,0 +1,37 @@
+Part 1 - Create Security Group:
+------------------------------
+isim ver, default VPC, inbound ve Oubound her ikisinde 22 ve 80 port aç. Tag ve value ver. creae yap.(standart işlemler)
+
+Part 2 - Create Target Group:
+-----------------------------
+instance default seç devam. target group ismi ver.
+HTTP:80, HTTP1, advance--> sadece interval 10 seconds değiştir diğerleri aynı. next deyip create yapıyoruz.
+
+Part 3 - Create Application Load Balancer:
+-----------------------------------------
+-Select the Application Load Balance,isim ver, vpc default, mapping-->tümünü seç, sec group seç, target listener ekle ve create et.
+
+Part 4 - Create Launch Template:
+--------------------------------
+- isim veriyoruz. Auto Scaling guidance-> tıkı işaretle
+- template tag key-value gir.
+- quick start, t2.micro
+- key pair, sec.group seç
+- advance hazır #!/bin/bash md dosyasından kopyala ekle.
+- create et.
+
+Part 5 - Create Auto Scaling Group:
+-----------------------------------
+- choose launch template or launch configuration; tüm subnets seç.
+- Attach to an existing load balancer, ELB,200 seconds next
+- group size; 1-1-1 capacity, Scaling policies->None next diyoruz.
+- notification seç ve mail adresi ekle.
+- create yapıyoruz.
+
+
+
+
+
+
+
+

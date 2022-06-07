@@ -1,0 +1,47 @@
+4 farklı şekilde yapılacak;
+
+1. Creating an Image from the Snapshot of the Nginx Server and Launching a new Instance:
+
+- instance launch ediyoruz(adı:SampleInstance) + resmin ip4 açıldığını kontrol et.
+(standart seçimler, SHH-HTTP, t2.micro + user data kopyalayalım)
+
+- EBS seç, create snapshot->instance /oluşturduğumuz instance seç, tag name-value isim ver, create bas(ss-1).
+
+- Action menusunden-->Instance-Snapshot_First oluşan snapshot-> create image from snapshot tıkla ve içeriği default seç doldur. 
+create image(AMI oluşturmuş olduk)
+
+- soldan AMIs aç. -->launch instance from AMI'dan Instance_1_from_Sample_Instance oluştur ve yeni bir instance ayağa kaldır.
+
+2.Creating an Image and Launching an Instance from the same Image with "Action Menu":
+
+- Go to SampleInstance
+- Click the actions menu, Select image >> create image
+- Tag image and snapshots seperately->AMI ve snapshot (ss-2)yenileri oluştu.
+- AMI-2 aktif hale gelince, lauch instance from AMI tıklayıp Instance_2_from_Sample_Instance ayağa kaldırıyoruz.
+
+3.Creating an Image from the Snapshot of the Root Volume and Launching a new Instance:
+
+- sol menuden(EBS)Click create snapshot button
+- sample instance'dan ss-3 oluşturuyoruz.
+- AMI menuden create AMI-3
+- Launch instance as named "Instance_3_from_Sample_Instance(4.İNSTANCE OLUŞTU:))
+
+4.Make AMI public:
+- AMI menuden create AMI-4
+- Click on permission and Click on "Make public "
+- After a while it will be public. Send the AMI ID from slack
+
+5.Hosting WordPress on EC2 with AMI:
+- Create EC2 instance
+- AMI: AWS Marketplace : "WordPress Certified by Bitnami and Automattic" (Free tier) +  t2.micro + 10Gb is default + Tag : Key=Name, Value= WordPress + Sec.Grp : HTTP & HTTPS & SSH are default
+- Go to the browser and paste WP IP
+- to customize the page >>>>> after the IP add "/wp-admin"
+- instance tıkla-->Action >>> Monitor and Troubleshoot >>>>>> Get System logs >>>> "user name and password"
+- Go to browser and log in with credentials
+- delete WP instance:))
+
+6.Silme sırası(Delete all AMIs and Snapshots.);
+---------------
+-instance, 
+-AMI(DEREGİSTER),
+-SNOAPSHOTS.

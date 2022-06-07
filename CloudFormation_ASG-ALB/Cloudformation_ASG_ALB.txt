@@ -1,0 +1,60 @@
+YAPILACAK İŞLEMLERİN SIRASI:
+
+İlk olarak LT(Launch Template) oluşturulacak: 
+- AMI+UserData(Yaml-VsCode)+Security Group
+
+         LB  -->  TG -->   ASG -->  ASP
+
+         
+1. cfn-temp.yaml Vscode oluşturuyoruz.
+   - cfn yazıp; decription + parameters +mappings + resources (zorunlu olan tek bölüm) + outputs alt başlıklarında yapıyoruz.
+
+vscode içinde oluşturma sırası; 
+-------------------------------
+security group - target group - (diğerleri farketmez)
+
+
+   - önce security group la başlıyoruz. bunu resources başlığının altına yazıyoruz. secgr yazınca otomatik çıkan formatı doldurmaya başlıyoruz.
+   - groupdescription zorunlu dolduruyoruz.
+   - secgroupngress sadece yazıyoruz; liste olacak "-" koyuyoruz sadece ıpprotocol başına, tcp, 22 portlara, cidrıp: 0.0.0.0/0
+   - aynısını 80 portu için kopyalıyoruz. başına "-" koymalıyız, liste
+   - target group oluşturuyoruz,yine resorces altında. Type:AWS::ElasticLoadBalancingV2::TargetGroup olmalı.
+   - launch template oluşturuyoruz.AWS::EC2 olacak. Image Id, instance type, userdata (!Base64 |)olarak kullanıyoruz.
+   - keypair, instance type kullanıcıya seçtirmek için parametrelerden ayarladık.
+AllowedValues:(yazarsak parametrede biz istediğimizi seçebileceğiz.)
+- t2.micro
+- t2.nano
+- t3.micro
+- t3.nano
+    - Resource altında LT altında instancetype: !Ref fonksiyonunu yazıyoruz. !Ref InstanceType kullandık, buda paremetrede ne yazdıysak onu getirecek fonksiyon. intrinsic functions bunlar.
+    - KeyName paremetreye bağlıyoruz. keypair yazınca parametre-type-keypair seçince otomatic VsCode getirecek.
+!Ref KeyPair yazıyoruz.
+    - mapping tanımlıyoruz, hepsini seçiyoruz. resorces FindInMap altına intrinsic funcsions bakarak yazıyoruz.
+pseudo parametere içinde hangi region çalışacağımızı belirtmemizi bu paremetre ile kullanıyoruz.
+ImageId:!FindInMap
+- RegionImageMap
+- !Ref AWS::Rgion
+- AMI
+
+     - Security Group için GetAtt function kullanacağız.
+!GetAtt mySG.GrouppId yazıyoruz.
+     - vpc ilişkilendiriyoruz. !Ref ile yapıyoruz.
+
+Outputs:
+  AppUrl:
+    Description: Url of the ALB
+    Value: !Join
+      - ""
+      - - "http://"
+        - !GetAtt myALB.DNSName
+# -- iç içe geçmiş şekilde olduğu için [[ aynısı sendede var:)
+
+
+
+
+
+
+
+
+
+  
