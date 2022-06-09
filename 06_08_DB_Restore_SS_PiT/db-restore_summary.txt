@@ -1,0 +1,100 @@
+Part1-Installing MariaDB Client on Ubuntu Instance and Setting up Database on RDS Instance Remotely:
+---------------------------------------------------
+Biz ssh ile ec2 ya, ec2 da outbound ile rds ye bağlanacak.(Ec2 nun tüm outbound protocolleri açık) Rds ise sadece bizim ec2 ya acık
+biz --> ec2 --> Rds
+----------------------------
+1.sec-gr ayarladık 2 adet; ssh ayrı ve rds için 3306 ayrı sec gr.
+2. rds git create database yapıyoruz.
+Endpoint & port: 
+rds-mysql.cxbymlez7bfx.us-east-1.rds.amazonaws.com
+
+- mysql -h Your RDS Endpoint -u admin -p
+
+step1- installing MariaDB-client on Ubuntu Instance:
+ec2 launch instance yapıyoruz 22 port(ssh) sadece
+- sudo apt update -y
+- sudo apt-get install mariadb-client -y
+
+step2-Connecting to RDS DB Instance:
+------------------------------
+mysql -h rds-mysql.cxbymlez7bfx.us-east-1.rds.amazonaws.com -u admin -p
+şifre:admin123
+
+step3-Creating Tables in RDS DB Instance and Populating with Data:
+readme komutları sırayla giriyoruz.
+
+Part 2 - Taking a Snapshot from RDS DB Instance:
+-------------------------------------------
+Take a manual snapshot of RDS instance and name it as manual-snapshot-RDS-mysql:
+- Go to Amazon RDS from AWS Console
+- Select RDS-mysql database ---> Action -----> Take Snapshot
+- Settings:
+  DB Instance: RDS-mysql
+  Snapshot name : Manual-Snapshot-RDS-Mysql
+- create
+
+Part 3 - Recovering RDS DB Instance from Manual Snapshot:
+-----------------------------------------------
+mysql -h rds-mysql.cxbymlez7bfx.us-east-1.rds.amazonaws.com -u admin -p
+şifre:admin123
+
+- USE clarusway;sırayla readme komutlar girilecek.
+
+- Restore database from manual snapshot as new DB instance and name it as restored-from-man-snapshot:
+- manual-snapshot-RDS-mysql
+- Click Action ----> Restore snapshot / readme sırayla giriyoruz.
+
+mysql -h [***restored-from-man-snapshot RDS endpoint] -u admin -p
+
+Part 4 - Restoring RDS DB Instance from a "Point in Time":
+--------------------------------------------------------
+mysql -h [RDS-MysqlENDPOINT] -u admin -p
+
+- USE clarusway;
+
+-To rescue the data we'll Restore database from the "point in time snapshot" that will be named as restored-from-point-in-time-RD:
+- Go to Amazon RDS console and select RDS-Mysql database;
+- Actions ---> Restore to point in time
+- Launch DB Instance
+Go to the MariaDB Client instance;
+
+- mysql -h [DNS Name of point in time recovery RDS Instance] -u admin -p clarusway
+
+Part 5 - Dumping and Migrating Database:
+--------------------------------------
+- mysqldump -h [restored-from-point-in-time-RDS endpoint] -u admin -p clarusway > backup.sql
+
+- mysqldump -h restored-from-point-in-time-rd.cxbymlez7bfx.us-east-1.rds.amazonaws.com -u admin -p clarusway > backup.sql
+(işlem yapmamış gibi gözüküyor ancak ls yapınca backup.sql gözüküyor:))
+
+- mysql -h [RDS-mysql endpoint] -u admin -p clarusway < backup.sql
+- mysql -h rds-mysql.cxbymlez7bfx.us-east-1.rds.amazonaws.com -u admin -p clarusway < backup.sql
+
+- mysql -h [RDS-mysql endpoint] -u admin -p;
+- mysql -h rds-mysql.cxbymlez7bfx.us-east-1.rds.amazonaws.com -u admin -p;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
